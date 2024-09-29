@@ -1,5 +1,6 @@
 
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
 
 def fetch_FAQs():
@@ -25,8 +26,6 @@ def fetch_FAQs():
     return articles
 
 
-import requests
-from datetime import datetime
 
 # Function to convert timestamp to a readable format
 def time_ago(timestamp):

@@ -1,5 +1,6 @@
 google-generativeai
 python-dotenv
 discord.py
-responses
 flask
+requests
+beautifulsoup4
