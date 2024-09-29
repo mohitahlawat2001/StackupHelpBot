@@ -64,6 +64,21 @@ async def on_message(message: Message) -> None:
     await send_message(message, user_message)
 
 
+# Slash command definition
+@client.tree.command(name="ask", description="Ask a question using the bot")
+async def ask(interaction: discord.Interaction, question: str):
+    try:
+        # Defer the response to avoid timeout issues
+        await interaction.response.defer()
+
+        # Long-running task here (like fetching or processing data)
+        response: str = get_response(question)
+        
+        # Send the actual response after processing
+        await interaction.followup.send(response)
+    except Exception as e:
+        # Handle the error by sending an ephemeral (private) message
+        await interaction.followup.send(f"Error: {e}", ephemeral=True)
 
 
 # MAIN ENTRY POINT
