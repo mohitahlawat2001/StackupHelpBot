@@ -70,6 +70,29 @@ async def ask_command(ctx, *, question: str):
     except Exception as e:
         await ctx.send(f"Error: {e}")
 
+# Define the traditional !faq command
+@client.command(name="faq")
+async def faq_command(ctx):
+    """Handles the !faq command."""
+    try:
+        # Respond with the FAQ list using fetch_FAQs function
+        faqs = fetch_FAQs()
+        response = "\n".join(faqs)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}")
+
+# Define the traditional !recent-activities command
+@client.command(name="recent-activities")
+async def activities_command(ctx):
+    """Handles the !recent-activities command."""
+    try:
+        # Respond with the recent activities using fetch_recent_activities function
+        activities = fetch_recent_activities()
+        await ctx.send(activities)
+    except Exception as e:
+        await ctx.send(f"Error: {e}")
+
 # Slash command definition
 @client.tree.command(name="ask", description="Ask a question using the bot")
 async def ask(interaction: discord.Interaction, question: str):

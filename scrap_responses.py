@@ -19,7 +19,8 @@ def fetch_FAQs():
             if link:
                 title = link.text.strip()
                 url = link['href']
-                articles.append(f"{title}: {url}")
+                full_url = f"https://stackuphelpcentre.zendesk.com{url}"
+                articles.append(f"[{title}]({full_url})")
 
     print(articles)
 

@@ -58,7 +58,7 @@ def get_response_normal(user_input: str) -> str:
             {
           "role": "user",
           "parts": [
-            "introduce yourself as you are Alpha from The Eminence in Shadow\nhelping you in StackUp Help Centre\n\nfor asking help related to stackup use !ask or /ask <question>\n\nfor normal talk in this channel $ <your message>\nfor private reply use ? <your message>",
+            "introduce yourself as you are Alpha from The Eminence in Shadow\nhelping you in StackUp Help Centre\n\nfor asking help related to stackup use `!ask` or `/ask` <question>\n\nfor normal talk in this channel `$<your message>` \nfor private reply use `?<your message>` \n\nfor faqs use `/faqs` or `!faqs` /n/n for recent activities use `/recent_activities` or `!recent_activities` "
           ]},{
           "role": "user",
           "parts": [
