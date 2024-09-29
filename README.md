@@ -8,7 +8,8 @@ This project is a Discord bot designed to serve as a helpdesk for **StackUp**, p
 - **`/ask` Slash Command**: Users can ask questions using the `/ask` command, and the bot will respond with helpful information from the StackUp Help Centre.
 - **Query Handling**: The bot supports both `!ask` and `/ask` commands to provide user flexibility.
 - **Multilingual Support**: The bot can respond to questions in multiple languages, enhancing user accessibility across different regions.
-- **Private Messaging**: If a query starts with ?, the bot sends a private message (DM) directly to the user, ensuring privacy for sensitive inquiries.
+- **Private Messaging**: If a msg starts with ?, the bot sends a private message (DM) directly to the user, ensuring privacy for sensitive inquiries.
+- **Channel Messaging**: If a msg starts with #, the bot sends a message in the same channel where the query was asked, allowing for public responses.
 - **LLM-Powered**: The bot leverages a powerful Gemini LLM API to generate intelligent and contextually accurate responses. Which is fine-tuned to StackUp's zendesk knowledge base.
 - **Reply in Message Threads or in any channel**: The bot can reply to the user in the same thread or in the channel where the query was asked.
   
@@ -47,9 +48,10 @@ This project is a Discord bot designed to serve as a helpdesk for **StackUp**, p
 ## How It Works
 
 1. Users can ask questions with the `/ask` command or the `!ask` command.
-2. The bot fetches the relevant data from the LLM API, which uses the StackUp Help Centre knowledge base.
-3. If a user sends a query starting with ?, the bot fetches the relevant data from the LLM API and sends the response as a private message.
-4. Responses are sent back to the user in a helpful format, either via direct message (private) or to the channel (public).
+2. The bot fetches the relevant data from the LLM API, which uses the StackUp Help Centre knowledge base when uses the `/ask` command or the `!ask` command.
+3. If a user sends a query starting with ? <msg> , the bot fetches the relevant data from the LLM API and sends the response as a private message.
+4. If a user sends a query starting with # <msg> , the bot fetches the relevant data from the LLM API and sends the response in the channel where the msg was sent.
+5. Responses are sent back to the user in a helpful format, either via direct message (private) or to the channel (public).
 
 ## Sample Prompts
 

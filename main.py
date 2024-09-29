@@ -1,43 +1,34 @@
 from typing import Final
 import os
 from dotenv import load_dotenv
-import discord  # Import discord module
-from discord import Intents, Client, Message
+import discord
+from discord import Intents, Message
 from discord.ext import commands
-from responses import get_response , get_response_normal
+from responses import get_response, get_response_normal
 import webserver
 
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 
 intents: Intents = Intents.default()
-intents.message_content = True  # NOQA
+intents.message_content = True  # Enable the message content intent
 
-# Use commands.Bot instead of Client to support commands and slash commands
+# Use commands.Bot to support commands and slash commands
 client = commands.Bot(command_prefix="!", intents=intents)
-
 
 async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
         print('(Message was empty because intents were not enabled probably)')
         return
 
-    if is_private := user_message[0] == '?':
+    if user_message[0] == '?':
         user_message = user_message[1:]
-    elif is_public := user_message[0] == '#':
-        user_message = user_message[1:]
-    else:
-        return
-
-    try:
         response: str = get_response_normal(user_message)
-        if is_private:
-            await message.author.send(response)
-        elif is_public:
-            await message.channel.send(response)
-    except Exception as e:
-        print(e)
-
+        await message.author.send(response)
+    elif user_message[0] == '#':
+        user_message = user_message[1:]
+        response: str = get_response_normal(user_message)
+        await message.channel.send(response)
 
 @client.event
 async def on_ready() -> None:
@@ -50,7 +41,6 @@ async def on_ready() -> None:
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
-
 @client.event
 async def on_message(message: Message) -> None:
     if message.author == client.user:
@@ -61,8 +51,12 @@ async def on_message(message: Message) -> None:
     channel: str = str(message.channel)
 
     print(f'[{channel}] {username}: "{user_message}"')
-    await send_message(message, user_message)
 
+    # Process commands first
+    await client.process_commands(message)  # Ensure commands are processed
+
+    # After processing commands, you can send messages if needed
+    await send_message(message, user_message)
 
 # Define the traditional !ask command
 @client.command(name="ask")
@@ -91,12 +85,10 @@ async def ask(interaction: discord.Interaction, question: str):
         # Handle the error by sending an ephemeral (private) message
         await interaction.followup.send(f"Error: {e}", ephemeral=True)
 
-
 # MAIN ENTRY POINT
 def main() -> None:
     webserver.keep_alive()
     client.run(TOKEN)
-
 
 if __name__ == '__main__':
     main()
