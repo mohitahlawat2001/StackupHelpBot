@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import discord  # Import discord module
 from discord import Intents, Client, Message
 from discord.ext import commands
-from responses import get_response
+from responses import get_response , get_response_normal
 import webserver
 
 load_dotenv()
@@ -30,7 +30,7 @@ async def send_message(message: Message, user_message: str) -> None:
         return
 
     try:
-        response: str = get_response(user_message)
+        response: str = get_response_normal(user_message)
         if is_private:
             await message.author.send(response)
         elif is_public:
@@ -63,6 +63,17 @@ async def on_message(message: Message) -> None:
     print(f'[{channel}] {username}: "{user_message}"')
     await send_message(message, user_message)
 
+
+# Define the traditional !ask command
+@client.command(name="ask")
+async def ask_command(ctx, *, question: str):
+    """Handles the !ask command."""
+    try:
+        # Respond with the answer using get_response function
+        response: str = get_response(question)
+        await ctx.send(response)
+    except Exception as e:
+        await ctx.send(f"Error: {e}")
 
 # Slash command definition
 @client.tree.command(name="ask", description="Ask a question using the bot")
