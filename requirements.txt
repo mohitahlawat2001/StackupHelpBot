@@ -1,0 +1,5 @@
+random
+google-generativeai
+python-dotenv
+discord.py
+responses
