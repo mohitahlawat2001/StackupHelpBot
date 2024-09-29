@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord import app_commands, Interaction
 from utils.responses import get_response
+from utils.helper import send_large_message
 
 class AskCommand(commands.Cog):
     """Cog for handling ask-related commands."""
@@ -23,7 +24,11 @@ class AskCommand(commands.Cog):
         try:
             await interaction.response.defer()
             response = get_response(question)
-            await interaction.followup.send(response)
+            if len(response) > 2000:
+                await interaction.followup.send("Response too long. Sending in parts...")
+                await send_large_message(interaction.followup, response)
+            else:
+                await interaction.followup.send(response)
         except Exception as e:
             await interaction.followup.send(f"Error: {e}", ephemeral=True)
 

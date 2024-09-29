@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord import app_commands, Interaction
 from utils.scrap_responses import fetch_recent_activities
+from utils.helper import send_large_message
 
 class ActivitiesCommand(commands.Cog):
     """Cog for handling recent activities-related commands."""
@@ -22,8 +23,12 @@ class ActivitiesCommand(commands.Cog):
         """Handles the slash recent activities command."""
         try:
             await interaction.response.defer()
-            activities = fetch_recent_activities()
-            await interaction.followup.send(activities)
+            response = fetch_recent_activities()
+            if len(response) > 2000:
+                await interaction.followup.send("Response too long. Sending in parts...")
+                await send_large_message(interaction.followup, response)
+            else:
+                await interaction.followup.send(response)
         except Exception as e:
             await interaction.followup.send(f"Error: {e}", ephemeral=True)
 

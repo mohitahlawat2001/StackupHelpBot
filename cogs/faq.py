@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord import app_commands, Interaction
 from utils.scrap_responses import fetch_FAQs
+from utils.helper import send_large_message
 
 class FaqCommand(commands.Cog):
     """Cog for handling FAQ-related commands."""
@@ -25,7 +26,11 @@ class FaqCommand(commands.Cog):
             await interaction.response.defer()
             faqs = fetch_FAQs()
             response = "\n".join(faqs)
-            await interaction.followup.send(response)
+            if len(response) > 2000:
+                await interaction.followup.send("Response too long. Sending in parts...")
+                await send_large_message(interaction.followup, response)
+            else:
+                await interaction.followup.send(response)
         except Exception as e:
             await interaction.followup.send(f"Error: {e}", ephemeral=True)
 
