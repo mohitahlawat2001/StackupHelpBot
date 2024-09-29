@@ -101,5 +101,3 @@ def fetch_recent_activities():
 
 
 
-fetch_recent_activities()
-fetch_FAQs()
