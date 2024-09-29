@@ -11,7 +11,7 @@ def fetch_FAQs():
     # Find the Promoted Articles section
     articles_section = soup.find('section', class_='articles')
     articles = []
-
+    articles.append("FAQs\n\n")  # Start with the heading
     if articles_section:
         promoted_items = articles_section.find_all('li', class_='promoted-articles-item')
         for item in promoted_items:
@@ -20,9 +20,9 @@ def fetch_FAQs():
                 title = link.text.strip()
                 url = link['href']
                 full_url = f"https://stackuphelpcentre.zendesk.com{url}"
-                articles.append(f"[{title}]({full_url})")
+                articles.append(f"[{title}]({full_url})\n")
 
-    print(articles)
+    # print(articles)
 
     return articles
 
@@ -78,7 +78,7 @@ def fetch_recent_activities():
                 breadcrumb_name = breadcrumb['name']
                 breadcrumb_url = breadcrumb['url']
                 full_breadcrumb_url = f"https://stackuphelpcentre.zendesk.com{breadcrumb_url}"
-                breadcrumb_links.append(f"[{breadcrumb_name}]({full_breadcrumb_url})")
+                breadcrumb_links.append(f"[{breadcrumb_name}]({full_breadcrumb_url})\n")
 
             # Format the activity output
             if breadcrumbs:
@@ -102,3 +102,4 @@ def fetch_recent_activities():
 
 
 fetch_recent_activities()
+fetch_FAQs()
