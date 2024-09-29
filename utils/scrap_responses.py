@@ -64,7 +64,7 @@ def fetch_recent_activities():
 
         for activity in activities:
             breadcrumbs = activity.get('breadcrumbs', [])
-            title = activity.get('title')
+            title = activity.get('title').strip()
             link = activity.get('url')
             comment_count = activity.get('comment_count', 0)
             created_at = activity.get('timestamp')
