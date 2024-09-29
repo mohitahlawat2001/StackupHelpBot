@@ -5,6 +5,7 @@ import discord
 from discord import Intents, Message
 from discord.ext import commands
 from responses import get_response, get_response_normal
+from scrap_responses import fetch_FAQs , fetch_recent_activities
 import webserver
 
 load_dotenv()
@@ -25,7 +26,7 @@ async def send_message(message: Message, user_message: str) -> None:
         user_message = user_message[1:]
         response: str = get_response_normal(user_message)
         await message.author.send(response)
-    elif user_message[0] == '#':
+    elif user_message[0] == '$':
         user_message = user_message[1:]
         response: str = get_response_normal(user_message)
         await message.channel.send(response)
@@ -79,6 +80,40 @@ async def ask(interaction: discord.Interaction, question: str):
         # Long-running task here (like fetching or processing data)
         response: str = get_response(question)
         
+        # Send the actual response after processing
+        await interaction.followup.send(response)
+    except Exception as e:
+        # Handle the error by sending an ephemeral (private) message
+        await interaction.followup.send(f"Error: {e}", ephemeral=True)
+
+# Slash command definition
+@client.tree.command(name="faq", description="Fetch the FAQ list")
+async def faq(interaction: discord.Interaction):
+    try:
+        # Defer the response to avoid timeout issues
+        await interaction.response.defer()
+
+        # Long-running task here (like fetching or processing data)
+        faqs = fetch_FAQs()
+        response = "\n".join(faqs)
+
+        # Send the actual response after processing
+        await interaction.followup.send(response)
+    except Exception as e:
+        # Handle the error by sending an ephemeral (private) message
+        await interaction.followup.send(f"Error: {e}", ephemeral=True)
+
+# Slash command definition
+@client.tree.command(name="recent-activities", description="Fetch recent activities")
+async def activities(interaction: discord.Interaction):
+    try:
+        # Defer the response to avoid timeout issues
+        await interaction.response.defer()
+
+        # Long-running task here (like fetching or processing data)
+        activities = fetch_recent_activities()
+        response = activities
+
         # Send the actual response after processing
         await interaction.followup.send(response)
     except Exception as e:
