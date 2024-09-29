@@ -24,7 +24,7 @@ async def send_message(message: Message, user_message: str) -> None:
 
     if is_private := user_message[0] == '?':
         user_message = user_message[1:]
-    elif is_public := user_message[0] == '!':
+    elif is_public := user_message[0] == '#':
         user_message = user_message[1:]
     else:
         return
