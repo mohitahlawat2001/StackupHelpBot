@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 import discord  # Import discord module
 from discord import Intents, Client, Message
 from discord.ext import commands
-from discord import app_commands  # For slash commands
 from responses import get_response
+import webserver
 
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
@@ -83,6 +83,7 @@ async def ask(interaction: discord.Interaction, question: str):
 
 # MAIN ENTRY POINT
 def main() -> None:
+    webserver.keep_alive()
     client.run(TOKEN)
 
 
